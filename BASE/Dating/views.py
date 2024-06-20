@@ -4,14 +4,13 @@ from .forms import LoginForm
 
 
 def user_login(request):
+    context = {}
     if request.method == "GET":
-        context = {
-            'form': LoginForm()
-        }
+        context['form'] = LoginForm()
         return render(request,'Dating/login.html',context)
 
     elif request.method == 'POST':
-        form = LoginForm(request.POST)
+        form = LoginForm(data = request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
@@ -21,6 +20,9 @@ def user_login(request):
                 return HttpResponse("sucess")
             else:
                 return HttpResponse("Login faild")
-        return HttpResponse("invalid input")
+            
+        #if the form is not valid
+        context['form'] = form
+        return render(request,'Dating/login.html',context)
 def register(request):
     return render(request,'Dating/register.html')
