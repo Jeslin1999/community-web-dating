@@ -28,6 +28,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTH_USER_MODEL = 'Dating.User'
+
+
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Dating', # for handling dating app features
+
 ]
 
 MIDDLEWARE = [
@@ -79,6 +86,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'learnbuds',
+#         'USER': 'root',
+#         'PASSWORD' : '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#         'OPTIONS': {'sql_mode': 'traditional'}
+#     }
+# }
 
 
 # Password validation
