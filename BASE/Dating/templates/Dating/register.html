@@ -1,6 +1,16 @@
-
-
-{% extends 'Dating/base.html' %}
 {% block content %}
+<div class="container"></div>
 <h1 class="text-center">Register</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="container">
+        <div class="text-center">
+            {{ form.as_p }}
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary mt-2">Register</button>
+        </div>
+    </div>
+</form>
+</div>
 {% endblock content %}
