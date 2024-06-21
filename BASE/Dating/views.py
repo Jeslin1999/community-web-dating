@@ -27,43 +27,43 @@ def user_login(request):
         return render(request,'Dating/login.html',context)
     
 
-def register(request):
-    context = {}
-    if request.method == 'GET':
-        context['form'] = RegisterFirstFrom()
-        return render(request,'Dating/register.html',context)
-    elif request.method == 'POST':
-        form = RegisterFirstFrom(request.POST)
-        if form.is_valid():        
-            user = form.cleaned_data
-            data = User(
-                first_name = user['first_name'],
-                last_name = user['last_name'],
-                email = user['email'],
-                username = user['username'],
-                password = user['password'],
-                dob = user['dob'],
-                age = user['age']
-                )
-            data.save()
-            return redirect('../login')
-        else:
-            form = RegisterFirstFrom()
-    
-        context['form'] = RegisterFirstFrom()
-        return render(request,'Dating/register.html',context)
-
-
 # def register(request):
-#     if request.method == 'POST':
-#         form1 = RegisterFirstFrom(request.POST)
-#         if form1.is_valid():
-#             user = form1.save(commit = False)
-#             user.set_password(form1.cleaned_data['password'])
-#             user.save()
-#             return redirect('login')
-#     else:
-#         form1 = RegisterFirstFrom()
+#     context = {}
+#     if request.method == 'GET':
+#         context['form'] = RegisterFirstFrom()
+#         return render(request,'Dating/register.html',context)
+#     elif request.method == 'POST':
+#         form = RegisterFirstFrom(request.POST)
+#         if form.is_valid():        
+#             user = form.cleaned_data
+#             data = User(
+#                 first_name = user['first_name'],
+#                 last_name = user['last_name'],
+#                 email = user['email'],
+#                 username = user['username'],
+#                 password = user['password'],
+#                 dob = user['dob'],
+#                 age = user['age']
+#                 )
+#             data.save()
+#             return redirect('../login')
+#         else:
+#             form = RegisterFirstFrom()
     
-#     return render(request, 'Dating/register.html', {'form': form1})
+#         context['form'] = RegisterFirstFrom()
+#         return render(request,'Dating/register.html',context)
+
+
+def register(request):
+    if request.method == 'POST':
+        form1 = RegisterFirstFrom(request.POST)
+        if form1.is_valid():
+            user = form1.save(commit = False)
+            user.set_password(form1.cleaned_data['password'])
+            user.save()
+            return redirect('../login')
+    else:
+        form1 = RegisterFirstFrom()
+    
+    return render(request, 'Dating/register.html', {'form': form1})
     
