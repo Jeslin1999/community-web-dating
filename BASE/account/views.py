@@ -18,7 +18,7 @@ def user_login(request):
             user = authenticate(request,username=username,password=password)
             if user is not None:
                 login(request ,user)
-                return HttpResponse("sucess")
+                return render(request,'account/base.html',context)
             else:
                 return HttpResponse("Login faild")
             
@@ -26,33 +26,6 @@ def user_login(request):
         context['form'] = form
         return render(request,'account/login.html',context)
     
-
-# def register(request):
-#     context = {}
-#     if request.method == 'GET':
-#         context['form'] = RegisterFirstFrom()
-#         return render(request,'Dating/register.html',context)
-#     elif request.method == 'POST':
-#         form = RegisterFirstFrom(request.POST)
-#         if form.is_valid():        
-#             user = form.cleaned_data
-#             data = User(
-#                 first_name = user['first_name'],
-#                 last_name = user['last_name'],
-#                 email = user['email'],
-#                 username = user['username'],
-#                 password = user['password'],
-#                 dob = user['dob'],
-#                 age = user['age']
-#                 )
-#             data.save()
-#             return redirect('../login')
-#         else:
-#             form = RegisterFirstFrom()
-    
-#         context['form'] = RegisterFirstFrom()
-#         return render(request,'Dating/register.html',context)
-
 
 def register(request):
     if request.method == 'POST':

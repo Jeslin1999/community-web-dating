@@ -26,7 +26,15 @@ class LoginForm(Form):
 class RegisterFirstFrom(ModelForm):
     class Meta:
         model = User
-        fields = ['first_name','last_name','username','password','dob','age']
+        fields = ['first_name','last_name','email','username','password','city','dob','age','gender']
+
+
+class RegisterSecondFrom(ModelForm):
+    class Meta:
+        model = User
+        fields = []
+
+
     # first_name = CharField(
     #     max_length = 15,
     #     min_length = 3,
