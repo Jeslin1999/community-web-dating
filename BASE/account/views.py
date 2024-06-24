@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse,redirect
 from django.contrib.auth import authenticate,login
-from .forms import LoginForm,RegisterFirstFrom
+from .forms import LoginForm,RegisterFirstFrom,RegisterSecondFrom
 from .models import User
 
 
@@ -39,4 +39,29 @@ def register(request):
         form1 = RegisterFirstFrom()
     
     return render(request, 'account/register.html', {'form': form1})
+
+def registersecond(request):
+    if request.method == 'POST':
+        form1 = RegisterSecondFrom(request.POST)
+        if form1.is_valid():
+            user = form1.save(commit = False)
+            user.set_password(form1.cleaned_data['password'])
+            user.save()
+            return redirect('../login')
+    else:
+        form1 = RegisterSecondFrom()
     
+    return render(request, 'account/register.html', {'form': form1})
+    
+# def registersecond(request):
+#     if request.method == 'POST':
+#         form1 = RegisterSecondFrom(request.POST)
+#         if form1.is_valid():
+#             user = form1.save(commit = False)
+#             user.set_password(form1.cleaned_data['password'])
+#             user.save()
+#             return redirect('../login')
+#     else:
+#         form1 = RegisterSecondFrom()
+    
+#     return render(request, 'account/register.html', {'form': form1})

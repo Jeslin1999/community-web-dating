@@ -26,13 +26,15 @@ class LoginForm(Form):
 class RegisterFirstFrom(ModelForm):
     class Meta:
         model = User
-        fields = ['first_name','last_name','email','username','password','city','dob','age','gender']
+        fields = ['first_name','last_name','email','username','password','city','dob','age','gender','nationality','intrest','height','rel_status','fath','community','mother_tonge','smoke','drinking','images','video']
 
 
 class RegisterSecondFrom(ModelForm):
-    class Meta:
-        model = User
-        fields = []
+    pass
+    # class Meta:
+        # model = User
+        # fields = ['nationality','intrest','height','rel_status','fath','community','mother_tonge','smoke','drinking','images','video']
+         
 
 
     # first_name = CharField(
