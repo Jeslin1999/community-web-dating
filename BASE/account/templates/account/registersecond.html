@@ -25,10 +25,12 @@
                 {% csrf_token %}
                 <div class="container col-sm-4 offset-sm-4 mt-5">
                     <div class="text-center">
+                        <!-- {{ wizard.management_form }}
+                        {{ wizard.form.as_p }}-->
                         {{ form.as_p }}
                     </div>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-warning mt-2">Next</button>
+                        <button type="submit" class="btn btn-warning mt-2">Register</button>
                     </div>
                 </div>
             </form>

@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
+    # local apps
+    'account.apps.AccountConfig',
     'Dating',
 
 ]
@@ -94,7 +95,7 @@ WSGI_APPLICATION = 'BASE.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'datingapp',
+        'NAME': 'datinga',
         'USER': 'root',
         'PASSWORD':'',
         'HOST':'localhost',
@@ -145,7 +146,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 # media
 
-MEDIA_URL = '/upload/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# new
+AUTH_USER_MODEL = 'account.User'

@@ -21,11 +21,13 @@
         {% block content %}
         <div class="container">
             <h1 class="text-center">Register</h1>
-            <form action="" method="post">
+            <form method="POST">
                 {% csrf_token %}
                 <div class="container col-sm-4 offset-sm-4 mt-5">
                     <div class="text-center">
-                        {{ form.as_p }}
+                        <!-- {{ wizard.management_form }} -->
+                        <!-- {{ wizard.form.as_p }} -->
+                          {{ form.as_p }}
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-warning mt-2">Next</button>
