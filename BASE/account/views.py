@@ -116,6 +116,7 @@ def edit_profile(request):
 #         user.set_password(user.password)
 #         user.save()
 #         return redirect('../login')
+
     # elif request.method == 'POST':
     #     form1 = RegisterSecondFrom(request.POST)
     #     if form1.is_valid():
