@@ -14,30 +14,29 @@
 
 <body>
     <header>
-        <!-- place navbar here -->
+        {% include 'shared/navbardash.html' %}
     </header>
     <main>
-
         {% block content %}
-        <div class="container">
-            <h1 class="text-center">Register</h1>
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="container col-sm-4 offset-sm-4 mt-5">
-                    <div class="text-center">
-                        <!-- {{ wizard.management_form }}
-                        {{ wizard.form.as_p }}-->
-                        {{ form.as_p }}
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-warning mt-2">Register</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        <div class="container-fluid">
+            <div
+                class="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center text-center">
+                <p class="text-light fw-bolder" style="font-size: 70px;">Start Something Epic</p>
+                <button class="px-4 py-2 mt-3 fw-bold fs-5 rounded-pill border-0 text-light"
+                    style="background-image: linear-gradient(180deg, #f4443b, #fe817b);">Compleate profile</button>
+                <a href="#">
+                    <button class="px-4 py-2 mt-3 fw-bold fs-5 rounded-pill border-0 text-light"
+                        style="background-image: linear-gradient(180deg, #f4443b, #fe817b);">add media</button>
+                    {% if user_media %}
+                    <a href="#">
+                        <button class="px-4 py-2 mt-3 fw-bold fs-5 rounded-pill border-0 text-light"
+                            style="background-image: linear-gradient(180deg, #f4443b, #fe817b);">update media</button>
+                    </a>
+                    {% endif %}
+                </a>
+            </div>
         </div>
         {% endblock content %}
-        
     </main>
     <footer>
         <!-- place footer here -->

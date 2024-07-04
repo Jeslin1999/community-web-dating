@@ -1,70 +1,38 @@
 from django.forms import *
-from .models import User
+from django import forms
+from .models import User, EmailOTP
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
 from django.core.validators import EmailValidator
 
 
-User = get_user_model()
+# class EmailForm(forms.ModelForm):
+#     class Meta:
+#         model = EmailOTP
+#         fields = ['email']
+#         widgets = {
+#             'email': forms.EmailInput(attrs={'placeholder': 'Enter email'}),
+#         }
 
-class LoginForm(Form):
+
+class OTPForm(forms.Form):
+    email = forms.EmailField(required=True)
+    otp = forms.CharField(max_length=6, required=True)
+
+
+class LoginForm(UserCreationForm):
     username = CharField(
         max_length = 15,
         min_length = 4,
         label = 'Username',
         required = True,
         widget = TextInput({
-            'class' : 'form-control'
-        })
-    )
-    
-    password = CharField(
-        max_length = 15,
-        min_length = 4,
-        label = 'Pasword',
-        required = True,
-        widget = PasswordInput({
-            'class' : 'form-control'
-        })
-    )
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'dob', 'age', 'city', 'gender', 'password1', 'password2')
-
-
-class RegisterFirstForm(UserCreationForm):
-    
-    first_name = CharField(
-        max_length = 15,
-        min_length = 3,
-        label = 'First Name',
-        required = True,
-        widget = TextInput({
-            'class' : 'form-control'
-        })
-    )
-
-    last_name = CharField(
-        max_length = 15,
-        min_length = 1,
-        label = 'Last Name',
-        required = True,
-        widget = TextInput({
-            'class' : 'form-control'
-        })
-    )
-    username = CharField(
-        max_length = 15,
-        min_length = 1,
-        label = 'username',
-        required = True,
-        widget = TextInput({
-            'class' : 'form-control'
+            'class' : 'form-control',
+            'placeholder': 'User Name'
         })
     )
 
     email = EmailField(
-        max_length = 15,
+        max_length = 50,
         min_length = 3,
         label = 'Email',
         required = True,
@@ -72,32 +40,57 @@ class RegisterFirstForm(UserCreationForm):
             EmailValidator()
         ],
         widget = EmailInput(attrs={
-            'class': 'form-control'
+            'class': 'form-control',
+            'placeholder': 'Enter email'
+        })
+    )
+    
+    password = CharField(
+        max_length = 15,
+        min_length = 8,
+        label = 'Password',
+        required = True,
+        widget = PasswordInput({
+            'class' : 'form-control',
+            'placeholder': 'Password'
+        })
+    )
+
+    def login(self,user):
+        user.username = self.cleaned_data['username'],
+        user.password = self.cleaned_data['password'],
+        user.email = self.cleaned_data['email']
+        user.save()
+
+    class Meta:
+        model = User
+        fields = ('username','password','email')
+
+
+class RegisterFirstForm(UserCreationForm):
+    
+    fullname = CharField(
+        max_length = 30,
+        min_length = 3,
+        label = 'Full Nmae',
+        required = True,
+        widget = TextInput({
+            'class' : 'form-control'
         })
     )
 
     dob = DateField(
         label = 'DOB',
-        # required = True,
+        required = True,
         widget = DateInput({
             'class' : 'form-control'
         })
     )
 
-    age = IntegerField(
-        label = 'AGE',
+    phone = IntegerField(
+        label = 'Phone No:',
         required = True,
         widget = NumberInput({
-            'class' : 'form-control'
-        })
-    )
-
-    city = CharField(
-        max_length = 15,
-        min_length = 3,
-        label = 'City',
-        required = True,
-        widget = TextInput({
             'class' : 'form-control'
         })
     )
@@ -114,24 +107,10 @@ class RegisterFirstForm(UserCreationForm):
         label='Gender',
         required=True,    
     )
-    password2 = CharField(
-        max_length=15,
-        min_length=4,
-        label='Password_confirmation',
-        required=True,
-        widget=PasswordInput(attrs={'class': 'form-control'})
-    )
-    password1 = CharField(
-        max_length=15,
-        min_length=4,
-        label='Password',
-        required=True,
-        widget=PasswordInput(attrs={'class': 'form-control'})
-    )
 
     # class Meta:
     #     model = User
-    #     fields = ['first_name','last_name','email','username','password1','password2','city','dob','age','gender']
+    #     fields = ['first_name','last_name','dob','age','gender']
 
 
 # class RegisterSecondFrom(UserCreationForm):
@@ -158,22 +137,20 @@ class RegisterFirstForm(UserCreationForm):
         ('T','Teetotaler'),
         ('P','Plan to Quit')
     ]
-    nationality = CharField(
-        max_length = 15,
-        min_length = 3,
-        label = 'Nationality',
-        required = True,
-        widget = TextInput({
-            'class' : 'form-control'
-        })
-    )
 
-    intrest = CharField(
+    interest = CharField(
         max_length = 15,
         min_length = 1,
         label = 'Interst',
         required = True,
         widget = TextInput({
+            'class' : 'form-control'
+        })
+    )
+    weight = IntegerField(
+        label = 'Weight',
+        required = True,
+        widget = NumberInput({
             'class' : 'form-control'
         })
     )
@@ -186,10 +163,19 @@ class RegisterFirstForm(UserCreationForm):
         })
     )
 
+    qualification = CharField(
+        max_length = 15,
+        min_length = 1,
+        label = 'Qualification',
+        widget = TextInput({
+            'class' : 'form-control'
+        })
+    )
+
     fath = CharField(
         max_length = 15,
         min_length = 1,
-        label = 'Fath',
+        label = 'Faith',
         required = True,
         widget = TextInput({
             'class' : 'form-control'
@@ -200,7 +186,6 @@ class RegisterFirstForm(UserCreationForm):
         max_length = 15,
         min_length = 1,
         label = 'Community',
-        required = True,
         widget = TextInput({
             'class' : 'form-control'
         })
@@ -210,39 +195,46 @@ class RegisterFirstForm(UserCreationForm):
         max_length = 15,
         min_length = 1,
         label = 'Mother Tonge',
-        required = True,
         widget = TextInput({
             'class' : 'form-control'
         })
     )
 
-    somke = ChoiceField(
+    smoking = ChoiceField(
         choices=SMOKE,
-        label='Smoking Habbit',
-        required=True,    
+        label='Smoking Habbit',  
     )
     drinking = ChoiceField(
         choices= DRINKING,
-        label='Drinking ',
-        required=True,    
+        label='Drinking ',    
     )
     rel_status = ChoiceField(
         choices= REL_STATAS,
-        label='Your Status',
-        required=True,    
+        label='Your Status',  
+    )
+    image = FileField(
+        label="Profile image"
+
     )
     
     class Meta:
         model = User
-        fields = ['first_name','last_name','email','username','password1','password2','city','dob','age','gender','nationality','intrest','height','rel_status','fath','community','mother_tonge','smoke','drinking','images','video']
+        fields = ['dob','phone','gender','interest','qualification','weight','height','rel_status','fath','community','mother_tonge','smoke','drinking','image']
          
-class EditProfileForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['first_name','last_name','email','username','password1','password2','city','dob','age','gender','nationality','intrest','height','rel_status','fath','community','mother_tonge','smoke','drinking','images','video']
+
+# class EmploymentInfoForm(Form):
+#     class Meta:
+#         model = EmploymentInfo
+#         fields = ['user_Id','employment_type','company_name','designation','location','experience_level']
 
 
-class UserProfileForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['first_name','last_name','email','username','password1','password2','city','dob','age','gender','nationality','intrest','height','rel_status','fath','community','mother_tonge','smoke','drinking','images','video']
+# class RelationshipForm(Form):
+#     class Meta:
+#         model = Relationship_goal
+#         fields = ['user_Id','relationship_type']
+
+
+# class ProfileImageForm(forms.ModelForm):
+#     class Meta:
+#         model = ProfileImage
+#         fields = ['image']

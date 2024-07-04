@@ -19,25 +19,100 @@
     <main>
 
         {% block content %}
-        <div class="container">
-            <h1 class="text-center">Register</h1>
-            <form method="POST">
-                {% csrf_token %}
-                <div class="container col-sm-4 offset-sm-4 mt-5">
-                    <div class="text-center">
-                        <!-- {{ wizard.management_form }} -->
-                        <!-- {{ wizard.form.as_p }} -->
-                          {{ form.as_p }}
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-warning mt-2">Next</button>
+
+        <section class="h-100 h-custom gradient-custom-2">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12">
+                        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
+                                    <div class="col-lg-6">
+                                        <div class="p-5">
+                                            <h3 class="fw-normal mb-5" style="color: #4835d4;">General Information</h3>
+
+                                            {% if form.errors %}
+                                            <div style="color: red;">
+                                                <ul>
+                                                    {% for field in form %}
+                                                    {% for error in field.errors %}
+                                                    <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                    {% endfor %}
+                                                    {% for error in form.non_field_errors %}
+                                                    <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+
+                                            <form method="post">
+                                                {% csrf_token %}
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.image.label_tag }}{{ form.image }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.fullname.label_tag }}{{ form.fullname }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.dob.label_tag }}{{ form.dob }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.phone.label_tag }}{{ form.phone }}
+                                                </div>
+                                               <div class="mb-4 pb-2">
+                                                    {{ form.gender.label_tag }}{{ form.gender }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.interest.label_tag }}{{ form.interest }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                  {{ form.qualification.label_tag }}{{ form.qualification }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                  {{ form.weight.label_tag }}{{ form.weight }}
+                                                </div>
+                                              
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.height.label_tag }}{{ form.height }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.fath.label_tag }}{{ form.fath }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.community.label_tag }}{{ form.community }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.mother_tonge.label_tag }}{{form.mother_tonge }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.smoke.label_tag }}{{ form.smoke }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.drinking.label_tag }}{{ form.drinking }}
+                                                </div>
+                                                <div class="mb-4 pb-2">
+                                                    {{ form.rel_status.label_tag }}{{ form.rel_status }}
+                                                </div>
+                                                <button type="submit" class="btn btn-warnning btn-lg">Register</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 bg-indigo text-white">
+                                        <div class="p-5">
+                                            <!-- Add any other additional content or design here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        </div>
+            </div>
+        </section>
+
         {% endblock content %}
-        
+
     </main>
     <footer>
         <!-- place footer here -->

@@ -3,6 +3,7 @@
 
 <head>
     {% block meta %}
+
     {% endblock meta %}
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -16,13 +17,14 @@
 
 <body>
     <header>
-        {% include 'account/navbar.html' %}
+        {% include 'shared/navbar.html' %}
     </header>
     <main>
         {% block content %}
 
         <h1>BASE</h1>
-        <p>Login Success</p>
+
+        {% csrf_token %}
 
         {% endblock content %}
     </main>
