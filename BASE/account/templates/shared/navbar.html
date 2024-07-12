@@ -18,7 +18,7 @@
 </style>
 <nav class="navbar navbar-expand-sm navbar-dark bg-warning nav-link nav-link:hover">
     <div class="container">
-        <a class="navbar-brand" href="#">Dating App</a>
+        <a class="navbar-brand" href="{% url 'account:index' %}">Dating App</a>
         <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
                     <a class="nav-link" href="{% url 'Dating:login' %}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account:register' %}">Register</a>
+                    <a class="nav-link" href="{% url 'account:send_otp' %}">Create Account</a>
                 </li>
                 {% endif %}
 
@@ -54,6 +54,8 @@
                         Profile
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="">Profile</a></li>
+                        <li><a class="dropdown-item" href="">Dashboard</a></li>
                         <li><a class="dropdown-item" href="#">Change Password</a></li>
                         <li>
                             <hr class="dropdown-divider">

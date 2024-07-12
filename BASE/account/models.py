@@ -1,25 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth import get_user_model
-from django.conf import settings
 import random
-from datetime import date
+from django.contrib.auth.models import AbstractUser
+import datetime
+
 # Create your models here.
 
-
-
-class EmailOTP(models.Model):
-    email = models.EmailField(unique=True)
-    otp = models.CharField(max_length=6, blank=True, null=True)
-    is_verified = models.BooleanField(default=False)
-
-    def generate_otp(self):
-        self.otp = str(random.randint(100000, 999999))
-        self.save()
-
-    def __str__(self):
-        return self.email
-    
 
 class User(AbstractUser):
     GENDER_CHOICES = [
@@ -51,41 +36,75 @@ class User(AbstractUser):
         ('T','Teetotaler'),
         ('P','Plan to Quit')
     ]
-    fullname=models.CharField(max_length=25,null=True, blank=True)
-    age = models.PositiveIntegerField(null=True, blank=True)
     phone = models.CharField(max_length=15, blank=True, null=True)
     dob = models.DateField(null=True, blank=True)
     bio=models.TextField(blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M')
     interest = models.CharField(max_length=100,null=True,blank=True)
-    weight = models.FloatField(null=True, blank=True)  
-    height = models.PositiveIntegerField(null=True, blank=True)
     qualification=models.CharField(max_length=25,null=True, blank=True)
     rel_status = models.CharField(max_length=3, choices=REL_STATAS,default='S')
-    fath = models.CharField(max_length=100,null=True,blank=True)
-    community = models.CharField(max_length=50,null=True, blank=True)
-    mother_tonge = models.CharField(max_length=100,null=True, blank=True)
     smoke = models.CharField(max_length=1,choices=SMOKE,default='N')
     drinking = models.CharField(max_length=1,choices=DRINKING,default='T')
     images = models.FileField(upload_to='upload/',null=True, blank=True)
+    is_email_verified = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.username.username
+    @property 
+    def full_name(self):
+        return f"{(self.first_name) (self.last_name)}"
     
+    def __str__(self) -> str:
+        return self.full_name
+    
+    @property
     def age(self):
-        today = date.today()
-        return today.year - self.dob.year - ((today.month, today.day) < (self.dob.month, self.dob.day))
+        if self.dob:
+            return (datetime.date.today() - self.dob).days // 365
+        return None     
 
 
-class UserMedia(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
-    additional_image1 = models.ImageField(upload_to='additional_images/', blank=True, null=True)
-    additional_image2 = models.ImageField(upload_to='additional_images/', blank=True, null=True)
-    additional_image3 = models.ImageField(upload_to='additional_images/', blank=True, null=True)
-    additional_image4 = models.ImageField(upload_to='additional_images/', blank=True, null=True)
-    additional_image5 = models.ImageField(upload_to='additional_images/', blank=True, null=True)
-    short_reel = models.FileField(upload_to='short_reels/', blank=True, null=True)
+class EmailOTP(models.Model):
+    email = models.EmailField(unique=False)
+    otp = models.CharField(max_length=6, blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
+
+    def generate_otp(self):
+        self.otp = str(random.randint(100000, 999999))
+        self.save()
 
     def __str__(self):
-        return f"{self.user.username}'s Media"
+        return self.email
+    
+
+
+class Employee(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    position = models.CharField(max_length=100)
+    department = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.position}"
+
+class Jobseeker(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100,null=True, blank=True)
+    expertise_level = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.expertise_level}"
+    
+       
+class Relationship(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    relation = models.CharField(max_length=100,null=True, blank=True)
+     
+    @property
+    def full_name(self):
+        return f"{(User.first_name) (User.last_name)}"
+    
+    
+    def __str__(self) -> str:
+        return self.full_name
+
+     
+    
