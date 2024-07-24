@@ -1,0 +1,91 @@
+{% extends 'shared/base.html' %}
+{% block content %}
+
+<style>
+    .chat-box {
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        padding: 10px;
+        background: #f5f5f5;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+        background: #fff;
+    }
+
+    .message {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        max-width: 80%;
+    }
+
+    .message.sent {
+        background: #e1ffc7;
+        margin-left: auto;
+    }
+
+    .message.received {
+        background: #f0f0f0;
+    }
+
+    .message-form {
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        background: #f5f5f5;
+    }
+
+    .message-form textarea {
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .message-form button {
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-2">
+            {% include 'Dating/shared/side.html' %}
+        </div>
+        <div class="col-10">
+            <div class="chat-box">
+                <div class="chat-header">
+                    <h4>Chat with {{ receiver.username }}</h4>
+                </div>
+                <div class="chat-messages">
+                    {% for message in messages %}
+                    <div class="message {{ 'sent' if message.sender == user else 'received' }}">
+                        <p>{{ message.content }}</p>
+                        <small>{{ message.timestamp|date:"H:i" }}</small>
+                    </div>
+                    {% empty %}
+                    <p>No messages yet.</p>
+                    {% endfor %}
+                </div>
+                <form method="post" class="message-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

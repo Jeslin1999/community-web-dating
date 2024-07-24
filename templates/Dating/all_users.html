@@ -1,0 +1,49 @@
+{% extends 'shared/base.html' %}
+{% load static%}
+{% block content %}
+<style>
+    .user-card {
+        margin-bottom: 20px;
+    }
+    .user-card img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 1rem;
+    }
+
+    .img{
+        width: 300px;
+        height: 500px;
+    }
+</style>
+<div class="container">
+    <h1>All Users Details</h1>
+    <div class="row">
+        {% for user in users %}
+        <div class="col-md-4 user-card">
+            <div class="card h-100">
+                <a class="navbar-brand" href="{% url 'Dating:user_detail' user.id %}">
+                    {% if user.images %}
+                    <img src="{{ user.images.url }}" class="card-img-top img" alt="{{ user.first_name }}">
+                    {% else %}
+                    <img src="{% static 'images/default-profile.jpeg' %}"  class="card-img-top" alt="Default profile picture">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user.first_name }} {{ user.last_name }}</h5>
+                        <p class="card-text">{{ user.age }}</p>
+                        <p> {{ user.username }}</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
