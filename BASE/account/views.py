@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
-from .forms import EmailForm, LoginForm, RegisterForm, OTPForm, EmployeeForm, JobseekerForm
-from django.views.generic import FormView, TemplateView, ListView, CreateView, UpdateView
-from .models import User, EmailOTP, Relationship
+from .forms import EmailForm, UpdateForm, RegisterForm, OTPForm, EmployeeForm, JobseekerForm
+from django.views.generic import FormView, TemplateView, ListView, CreateView, UpdateView, DeleteView
+from .models import User, EmailOTP, Relationship, Employee ,Jobseeker
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
@@ -50,30 +50,32 @@ def verify_otp(request):
 class RegisterView(FormView):
     template_name = 'account/register.html'
     form_class = RegisterForm
-    success_url = reverse_lazy('account:logina')
+    success_url = reverse_lazy('account:employeeinfo')
 
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password1'])
+        user.set_password(form.cleaned_data['password'])
         user.is_email_verified = True
         user.save()
-        return redirect('account:logina')
+        login(self.request, user)
+        return redirect('account:employeeinfo')
+        
     
     
-class RegisterLogin(FormView):
-    template_name = 'account/conformup.html'
-    form_class = LoginForm
+# class RegisterLogin(FormView):
+#     template_name = 'account/conformup.html'
+#     form_class = LoginForm
 
-    def form_valid(self, form):
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user = authenticate(self.request, username=username, password=password)
+#     def form_valid(self, form):
+#         username = form.cleaned_data['username']
+#         password = form.cleaned_data['password']
+#         user = authenticate(self.request, username=username, password=password)
 
-        if user is not None and user.is_email_verified:
-                login(self.request, user)
-                return redirect('account:employeeinfo')
-        else:
-            return self.form_invalid(form)
+#         if user is not None and user.is_email_verified:
+#                 login(self.request, user)
+#                 return redirect('account:employeeinfo')
+#         else:
+#             return self.form_invalid(form)
 
 class EmployeeinfoView(LoginRequiredMixin,View):
     def get(self, request):
@@ -131,11 +133,50 @@ class RelationshipView(View):
             pass
         return render(request, 'relationship.html')
 
+
+class ProfileListView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'account/profile.html'
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = context['users']
+        
+        for user in users:
+            user.images = user.images
+            user.employee_details = Employee.objects.filter(user=self.request.user)
+            user.jobseeker_details = Jobseeker.objects.filter(user=self.request.user)
+        
+        return context
+    
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UpdateForm
+    template_name = 'account/register.html'
+    pk_url_kwarg = 'id'
+    success_url = reverse_lazy('account:profile')
+
+    def get_object(self):
+        # Ensure the object being updated is the currently logged-in user
+        return self.request.user
+
+
+class ProfileDeleteView(LoginRequiredMixin, View):
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
+        if user == request.user:
+            user.delete()
+            return redirect('account:index')
+        else:
+            return redirect('account:profile')
         
         
 class LogoutView(TemplateView):
-    def get(self, request, *args, **kwargs):
+   def get(self, request, *args, **kwargs):
         logout(request)
-        return redirect('Dating:login')
+        request.session.flush()
+        return redirect(reverse_lazy('Dating:login'))
     
         

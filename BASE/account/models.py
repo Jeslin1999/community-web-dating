@@ -8,52 +8,50 @@ import datetime
 
 class User(AbstractUser):
     GENDER_CHOICES = [
-        ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other'),
-        ('N', 'Prefer not to say'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
     ]
     REL_STATAS = [
-        ('S','Single'),
-        ('SK','Single with Kid(s)'),
-        ('D','Divorced'),
-        ('DK','Divorced with Kid(s)'),
-        ('W','Widowed'),
-        ('WK','Widowed with Kid(s)'),
-        ('SP','Separated'),
-        ('SPK','Separated with Kid(s)'),
+        ('Single','Single'),
+        ('Single with Kid(s)','Single with Kid(s)'),
+        ('Divorced','Divorced'),
+        ('Divorced with Kid(s)','Divorced with Kid(s)'),
+        ('Widowed','Widowed'),
+        ('Widowed with Kid(s)','Widowed with Kid(s)'),
+        ('Separated','Separated'),
+        ('Separated with Kid(s)','Separated with Kid(s)'),
     ]
     SMOKE = [
-        ('N','No'),
-        ('Y','Yes'),
-        ('P','Plan to Quit')
+        ('No','No'),
+        ('Yes','Yes'),
+        ('Plan to Quit','Plan to Quit')
     ]
 
     DRINKING = [
-        ('R','Regular'),
-        ('S','Socialy'),
-        ('O','Occasionally'),
-        ('T','Teetotaler'),
-        ('P','Plan to Quit')
+        ('Regular','Regular'),
+        ('Socialy','Socialy'),
+        ('Occasionally','Occasionally'),
+        ('Teetotaler','Teetotaler'),
+        ('Plan to Quit','Plan to Quit')
     ]
     phone = models.CharField(max_length=15, blank=True, null=True)
     dob = models.DateField(null=True, blank=True)
     bio=models.TextField(blank=True)
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES,default='M')
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,default='Male')
     interest = models.CharField(max_length=100,null=True,blank=True)
     qualification=models.CharField(max_length=25,null=True, blank=True)
-    rel_status = models.CharField(max_length=3, choices=REL_STATAS,default='S')
-    smoke = models.CharField(max_length=1,choices=SMOKE,default='N')
-    drinking = models.CharField(max_length=1,choices=DRINKING,default='T')
+    location=models.CharField(max_length=100,blank=True,null=True)
+    rel_status = models.CharField(max_length=25, choices=REL_STATAS,default='Single')
+    smoke = models.CharField(max_length=15,choices=SMOKE,default='No')
+    drinking = models.CharField(max_length=15,choices=DRINKING,default='Teetotaler')
     images = models.FileField(upload_to='upload/',null=True, blank=True)
     is_email_verified = models.BooleanField(default=False)
 
     @property 
     def full_name(self):
         return f"{(self.first_name) (self.last_name)}"
-    
-    def __str__(self) -> str:
-        return self.full_name
+
     
     @property
     def age(self):

@@ -1,8 +1,9 @@
+{% extends 'shared/basea.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Toggle Form</title>
+  
+
+{% block content %} 
+
     <script>
         function toggleForm(formType) {
             document.getElementById('shortrelationship_form').style.display = formType === 'short' ? 'block' : 'none';
@@ -11,21 +12,23 @@
     </script>
 </head>
 <body>
-    <h1>Toggle Form</h1>
-    <button onclick="toggleForm('short')">Short Term Relationship</button>
-    <button onclick="" disabled>Long Term Relationship</button>
+    <div class="container">
+    <h1>Relationship</h1>
+    <button class="btn btn-success" onclick="toggleForm('short')">Short Term Relationship</button>
+    <button class="btn btn-success" onclick="" disabled>Long Term Relationship</button>
 
     <div id="shortrelationship_form" style="display:none;">
-        <h2>Short Term Relationship</h2>
+        <h2 class="text-danger mt-3">Short Term Relationship</h2>
+        Age You sure
         <form method="post" action="{% url 'account:relationship' %}">
             {% csrf_token %}
-            <!-- Add fields for ShortTermRelationship model as necessary -->
-            <button type="submit" name="short_submit">Submit</button>
+            <button class="btn btn-secondary" type="submit" name="short_submit">Submit</button>
         </form>
     </div>
 
     <div id="longrelationship_form" style="display:none;">
         <h2>Long Term Relationship</h2>
     </div>
-</body>
-</html>
+
+</div>
+{% endblock content %} 

@@ -1,7 +1,7 @@
 from django.forms import *
 from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
-from .models import User, Genderselect
+from .models import User, Genderselect, Message, Media
 
 
 class GenderselectForm(forms.Form):
@@ -15,23 +15,14 @@ class GenderselectForm(forms.Form):
         model = Genderselect
         fields = ['genderselect']
 
-class LoginForm(AuthenticationForm):
-    username = CharField(
-        max_length = 15,
-        min_length = 4,
-        label = 'Username',
-        required = True,
-        widget = TextInput({
-            'class' : 'form-control'
-        })
-    )
-    
-    password = CharField(
-        max_length = 15,
-        min_length = 4,
-        label = 'Pasword',
-        required = True,
-        widget = PasswordInput({
-            'class' : 'form-control'
-        })
-    )
+
+class MediaForm(forms.ModelForm):
+    class Meta:
+        model = Media
+        fields = ['media_type', 'file',]
+
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['content']

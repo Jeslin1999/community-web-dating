@@ -18,7 +18,7 @@ class LoginForm(AuthenticationForm):
     password = CharField(
         max_length = 15,
         min_length = 4,
-        label = 'Pasword',
+        label = 'Password',
         required = True,
         widget = PasswordInput({
             'class' : 'form-control'
@@ -29,10 +29,16 @@ class LoginForm(AuthenticationForm):
         fields = ('username','password')
 
 
-class RegisterForm(UserCreationForm):
+class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username','first_name','last_name','email','dob','phone','gender','bio','interest','qualification','rel_status','smoke','drinking']
+        fields = ['images','username','password','first_name','last_name','email','dob','phone','gender','location','bio','interest','qualification','rel_status','smoke','drinking']
+
+
+class UpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['images','first_name','last_name','email','dob','phone','gender','location','bio','interest','qualification','rel_status','smoke','drinking']
 
 
 class EmailForm(forms.ModelForm):
